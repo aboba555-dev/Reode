@@ -8,7 +8,7 @@ Reode mods only; an optional compatibility layer for Geode mods can be built
 from source (see [Geode compatibility](#geode-compatibility)).
 
 Website: https://aboba555-dev.github.io/Reode/ ·
-Download: [latest release](https://github.com/aboba555-dev/Reode/releases/latest)
+Download: [latest release](https://github.com/aboba555-dev/Reode/releases)
 
 ## Installing
 
