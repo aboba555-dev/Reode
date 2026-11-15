@@ -7,6 +7,9 @@ It is not a fork of Geode and contains no Geode code. Release builds run
 Reode mods only; an optional compatibility layer for Geode mods can be built
 from source (see [Geode compatibility](#geode-compatibility)).
 
+Website: https://aboba555-dev.github.io/Reode/ ·
+Download: [latest release](https://github.com/aboba555-dev/Reode/releases/latest)
+
 ## Installing
 
 Players run `ReodeSetup.exe` from a release. It finds Geometry Dash in the
