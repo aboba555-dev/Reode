@@ -164,7 +164,11 @@
   }
   // Hide screenshots that have not been added yet.
   for (const img of document.querySelectorAll(".shots img")) {
-    const drop = () => img.closest("figure").remove();
+    const drop = () => {
+      const shots = img.closest(".shots");
+      img.closest("figure").remove();
+      if (!shots.querySelector("figure")) shots.remove();
+    };
     if (img.complete && img.naturalWidth === 0) drop();
     else img.addEventListener("error", drop);
   }
