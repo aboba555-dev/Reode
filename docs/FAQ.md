@@ -10,7 +10,7 @@ made by the Geode team or RobTop Games.
 ## How do I install it?
 
 Download `ReodeSetup.exe` from the
-[latest release](../../releases/latest) and run it. It finds Geometry Dash
+[latest release](https://github.com/aboba555-dev/Reode/releases) and run it. It finds Geometry Dash
 in your Steam library by itself; if it cannot, it asks for the folder that
 contains `GeometryDash.exe`. Close the game before installing.
 
