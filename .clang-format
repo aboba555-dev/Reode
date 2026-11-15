@@ -1,0 +1,5 @@
+# Reode follows the Google C++ Style Guide exactly.
+# https://google.github.io/styleguide/cppguide.html
+BasedOnStyle: Google
+Language: Cpp
+Standard: Latest

@@ -1,0 +1,8 @@
+{
+  "reode": "1",
+  "id": "reode.frame_trace",
+  "name": "Frame Trace",
+  "version": "1.0.0",
+  "developers": ["Reode Team"],
+  "description": "Diagnostic: logs sprite frame lookups."
+}

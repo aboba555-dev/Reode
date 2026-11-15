@@ -1,0 +1,8 @@
+{
+  "reode": "1",
+  "id": "reode.hello",
+  "name": "Hello Reode",
+  "version": "1.0.0",
+  "developers": ["Reode Team"],
+  "description": "Example mod: logs a message every time the main menu opens."
+}

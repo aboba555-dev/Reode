@@ -1,0 +1,8 @@
+{
+  "reode": "1",
+  "id": "reode.screenshot",
+  "name": "Screenshot",
+  "version": "1.0.0",
+  "developers": ["Reode Team"],
+  "description": "Press F12 to save the game screen as a PNG in the Geometry Dash folder of your Pictures and copy it to the clipboard."
+}

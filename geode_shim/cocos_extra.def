@@ -1,0 +1,12 @@
+; Copyright 2026 The Reode Authors
+;
+; libcocos2d.dll exports missing from the Geode SDK's libcocos2d.lib that
+; Reode's Geode.dll needs. Turned into an import library at build time.
+LIBRARY libcocos2d.dll
+EXPORTS
+  ??0CCObject@cocos2d@@QEAA@XZ
+  ??1CCObject@cocos2d@@UEAA@XZ
+  ??0CCNode@cocos2d@@QEAA@XZ
+  ??1CCNode@cocos2d@@UEAA@XZ
+  ??0CCNodeRGBA@cocos2d@@QEAA@XZ
+  ??1CCNodeRGBA@cocos2d@@UEAA@XZ

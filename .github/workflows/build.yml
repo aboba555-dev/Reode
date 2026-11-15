@@ -1,0 +1,89 @@
+# Builds and tests Reode on every push and pull request. A pushed tag
+# v<version> also publishes a GitHub release with the installer, the bundled
+# mods and the SDK archive, built from exactly that commit.
+
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $out = New-Item -ItemType Directory -Force dist
+          Copy-Item build/installer/Release/ReodeSetup.exe $out
+          Copy-Item build/mods/Release/*.reode $out
+          # License texts of everything that ends up in the binaries.
+          $licenses = New-Item -ItemType Directory -Force licenses
+          Copy-Item LICENSE $licenses/Reode.txt
+          Copy-Item NOTICE.md $licenses
+          # Releases are built without REODE_GEODE_COMPAT: no Geode code.
+          if (Test-Path build/geode_shim/Release/Geode.dll) {
+            throw "Geode.dll must not be part of a release"
+          }
+          foreach ($dep in "nlohmann_json", "miniz") {
+            $file = Get-ChildItem "build/_deps/$dep-src" -File |
+              Where-Object Name -Match '^(LICENSE|COPYING)' | Select-Object -First 1
+            if (-not $file) { throw "No license file found for $dep" }
+            Copy-Item $file.FullName "$licenses/$dep.txt"
+          }
+          Compress-Archive -Path licenses/* -DestinationPath $out/licenses.zip
+          $sdk = New-Item -ItemType Directory -Force sdk
+          Copy-Item -Recurse loader/include $sdk/include
+          New-Item -ItemType Directory -Force $sdk/cmake | Out-Null
+          Copy-Item cmake/ReodeMod.cmake $sdk/cmake
+          Copy-Item -Recurse templates/mod $sdk/template
+          Copy-Item docs/first-mod.md $sdk
+          Copy-Item LICENSE $sdk
+          Compress-Archive -Path sdk/* -DestinationPath $out/reode-sdk.zip
+          Get-FileHash $out/* -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)" } |
+            Set-Content $out/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reode-${{ github.sha }}
+          path: dist/
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: reode-${{ github.sha }}
+          path: dist
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "${{ github.ref_name }}" dist/*
+          --repo "${{ github.repository }}"
+          --title "Reode ${{ github.ref_name }}"
+          --notes "Built by GitHub Actions from ${{ github.sha }}.
+          Check the files against SHA256SUMS.txt. VirusTotal report: (added after upload)."
+          --prerelease

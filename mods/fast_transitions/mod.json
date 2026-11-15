@@ -1,0 +1,8 @@
+{
+  "reode": "1",
+  "id": "reode.fast-transitions",
+  "name": "Fast Transitions",
+  "version": "1.0.0",
+  "developers": ["Reode Team"],
+  "description": "Shorter fades between menus and levels. Set DurationPercent in the mod's settings.ini (default 40; 0 = instant)."
+}
